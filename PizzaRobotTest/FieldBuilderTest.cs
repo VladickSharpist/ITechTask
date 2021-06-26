@@ -8,17 +8,18 @@ using Match = System.Text.RegularExpressions.Match;
 
 namespace PizzaRobotTest
 {
-    public class HelperTest
+    public class FieldBuilderTest
     {
-        private IHelper _helper;
+        private IFieldBuilder _fieldBuilder;
         [SetUp]
         public void Setup()
         {
-            _helper = new Helper();
+            _fieldBuilder = new FieldBuilder();
         }
 
         [Test]
-        public void GetPointFromMatch()
+        [TestCase()]
+        public void CreateField(string input)
         {
             
         }

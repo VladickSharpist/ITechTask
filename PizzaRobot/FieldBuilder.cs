@@ -6,12 +6,12 @@ using PizzaRobot.Interfaces;
 
 namespace PizzaRobot
 {
-    public class Helper : IHelper
+    public class FieldBuilder : IFieldBuilder
     {
-        public const string SizePattern = @"^(?<Heigth>[0-9]{1,})x(?<Width>[0-9]{1,})";
-        public const string PointPattern = @"\(\s*(?<X>\d+)\s*,\s*(?<Y>\d+)\s*\)";
+        private const string SizePattern = @"^(?<Heigth>[0-9]{1,})x(?<Width>[0-9]{1,})";
+        private const string PointPattern = @"\(\s*(?<X>\d+)\s*,\s*(?<Y>\d+)\s*\)";
 
-        public Point GetPointFromMatch(Match match)
+        private Point GetPointFromMatch(Match match)
         {
             var x = Convert.ToInt32(match.Groups["X"].Value);
             var y = Convert.ToInt32(match.Groups["Y"].Value);
@@ -19,22 +19,11 @@ namespace PizzaRobot
             {
                 throw new Exception("x or y is lower then zero");
             }
-            return new Point(x,y);
-        }
-        
-        public List<Point> PointsFromMatches(MatchCollection matchCollection)
-        {
-            var pointList = new List<Point>();
-            for (var i = 0; i < matchCollection.Count; i++)
-            {
-                var point = GetPointFromMatch(matchCollection[i]);
-                pointList.Add(point);
-            }
 
-            return pointList;
+            return new Point(x, y);
         }
-        
-        public List<Point> ParsePoints(string input)
+
+        private List<Point> ParsePoints(string input)
         {
             var pointExpr = new Regex(PointPattern);
             var matches = pointExpr.Matches(input);
@@ -43,10 +32,11 @@ namespace PizzaRobot
                 throw new Exception("No points to deliver or input is wrong");
             }
 
-            var pointList = PointsFromMatches(matches);
-            var sortedPoints = pointList.OrderBy(x=>x.X).ThenBy(x=>x.Y).ToList();
-            return sortedPoints;
+            return matches
+                .Select(GetPointFromMatch)
+                .ToList();
         }
+
         public Field CreateField(string input)
         {
             var size = new Regex(SizePattern);
@@ -56,10 +46,14 @@ namespace PizzaRobot
             {
                 throw new Exception("Field size input is wrong");
             }
+
             var newPointList = ParsePoints(input);
-            var field = new Field {PizzaPoints = newPointList,
+            var field = new Field
+            {
+                PizzaPoints = newPointList,
                 Height = Convert.ToInt32(match.Groups["Heigth"].Value),
-                Width = Convert.ToInt32(match.Groups["Width"].Value)};
+                Width = Convert.ToInt32(match.Groups["Width"].Value)
+            };
             return field;
         }
     }

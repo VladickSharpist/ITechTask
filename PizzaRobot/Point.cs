@@ -1,4 +1,6 @@
-﻿namespace PizzaRobot
+﻿using System;
+
+namespace PizzaRobot
 {
     public class Point
     {
@@ -17,6 +19,11 @@
         public override string ToString()
         {
             return $"({X},{Y})";
+        }
+
+        public double GetDistance(Point point)
+        {
+            return Math.Sqrt(Math.Pow(point.X-X,2)+Math.Pow(point.Y-Y,2));
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using PizzaRobot.Interfaces;
 
@@ -7,18 +9,22 @@ namespace PizzaRobot
     public class Robot : IRobot
     {
         public Point Position { get; set; }
-        public StringBuilder Route { get; }
+        public StringBuilder Route { get; } = new StringBuilder();
 
-        public Robot()
+        public Robot() : this(new Point(0, 0))
         {
-            Position = new Point(0, 0);
-            Route = new StringBuilder();
         }
 
         public Robot(Point start)
         {
             Position = new Point(start.X, start.Y);
-            Route = new StringBuilder();
+        }
+
+        public Point GetNearbyPoint(List<Point> points)
+        {
+            var distances = points.Select(x => x.GetDistance(Position)).ToList();
+            var nearbyPoint = points[distances.IndexOf(distances.Min())];
+            return nearbyPoint;
         }
 
         public void Move(Point moveToPoint)
