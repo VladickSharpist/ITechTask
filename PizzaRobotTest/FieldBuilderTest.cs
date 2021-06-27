@@ -28,16 +28,16 @@ namespace PizzaRobotTest
             Assert.That(field.Width == 4);
             Assert.That(field.PizzaPoints.Count == 2);
         }
-        
+
         [Test]
         [TestCase("5x5 (2,3) (4,2)")]
         public void CreateField_correctPoints(string input)
         {
             var field = _fieldBuilder.CreateField(input);
             Assert.That(field.PizzaPoints
-                .Exists(x=>x.X==2 && x.Y==3));
+                .Exists(x => x.X == 2 && x.Y == 3));
             Assert.That(field.PizzaPoints
-                .Exists(x=>x.X==4 && x.Y==2));
+                .Exists(x => x.X == 4 && x.Y == 2));
         }
 
         [Test]

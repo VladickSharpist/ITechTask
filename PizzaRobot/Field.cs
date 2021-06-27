@@ -5,9 +5,9 @@ namespace PizzaRobot
 {
     public class Field
     {
-
         private int _width;
         private int _height;
+
         public int Width
         {
             get => _width;
