@@ -8,8 +8,8 @@ namespace PizzaRobot
 {
     public class FieldBuilder : IFieldBuilder
     {
-        private const string SizePattern = @"^(?<Heigth>[0-9]{1,})x(?<Width>[0-9]{1,})";
-        private const string PointPattern = @"\(\s*(?<X>\d+)\s*,\s*(?<Y>\d+)\s*\)";
+        private const string SizePattern = @"^(?<Heigth>[0-9]{1,})x(?<Width>[0-9]{1,})\s+";
+        private const string PointPattern = @"\(\s*(?<X>-?\d+)\s*,\s*(?<Y>-?\d+)\s*\)";
 
         private Point GetPointFromMatch(Match match)
         {
@@ -44,7 +44,7 @@ namespace PizzaRobot
             var match = size.Match(input);
             if (match.Length == 0)
             {
-                throw new Exception("Field size input is wrong");
+                throw new Exception("Field size or input is wrong");
             }
 
             var newPointList = ParsePoints(input);
